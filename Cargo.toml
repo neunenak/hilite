@@ -1,3 +1,6 @@
+[dependencies]
+getopts = "0.2"
+
 [package]
 name = "hilite"
 version = "0.1.0"

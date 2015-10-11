@@ -3,6 +3,7 @@
  *
  */
 
+extern crate getopts;
 use std::env;
 use std::io;
 use std::io::Write;
@@ -41,14 +42,30 @@ fn color_code(style: HighlightStyles) -> &'static str {
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    if args.len() <  2 {
+
+    let mut opts = getopts::Options::new();
+    //opts.optopt("s", "style", "One of {red|cyan|underline-black|underline-white|underline-red|underline-cyan|background-red|background-cyan}", "STYLE");
+    opts.optopt("s", "style", "Some stuff", "STYLE");
+    opts.optflag("h", "help", "Print help");
+    let matches = match opts.parse(&args[1..]) {
+        Ok(m) => m,
+        Err(f) => panic!(f.to_string())
+    };
+
+    if matches.opt_present("h") {
+        let brief = format!("Usage: OPTIONS PROGRAM {}", "{-- PROGRAM_OPTIONS }");
+        print!("{}", opts.usage(&brief));
+        return;
+    }
+
+    if matches.free.len() <  1 {
         print_stderr!("{}: specify a command to execute\n",
                       args.get(0).unwrap());
         return;
     }
 
-    let program_name = args.get(1).unwrap();
-    let (_, program_args) = args.split_at(2);
+    let program_name = matches.free.get(0).unwrap();
+    let (_, program_args) = matches.free.split_at(1);
 
     let running_program = process::Command::new(program_name)
                               .args(& program_args)
