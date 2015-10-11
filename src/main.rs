@@ -24,8 +24,6 @@ fn main() {
     let program_name = args.get(1).unwrap();
     let (_, program_args) = args.split_at(2);
 
-    println!("Running {} with args {:?}", program_name, program_args);
-
     let mut program_command: process::Command = process::Command::new(program_name);
     program_command.stderr(process::Stdio::piped());
     let mut running_program = program_command.spawn().unwrap_or_else({|_| panic!("Failed to spawn program") });
