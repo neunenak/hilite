@@ -9,12 +9,15 @@ use std::io::Write;
 use std::io::Read;
 use std::process;
 
+macro_rules! print_stderr {
+    ($($arg:tt)*) => { write!(&mut io::stderr(), "{}", format_args!($($arg)*)) }
+}
+
 fn main() {
     let args: Vec<String> = env::args().collect();
     if args.len() <  2 {
-        write!(&mut io::stderr(),
-               "{}: specify a command to execute\n",
-               args.get(0).unwrap()).unwrap();
+        print_stderr!("{}: specify a command to execute\n",
+                      args.get(0).unwrap());
         return;
     }
 
