@@ -1,0 +1,4 @@
+[package]
+name = "hilite"
+version = "0.1.0"
+authors = ["greg <greg.shuflin@gmail.com>"]
