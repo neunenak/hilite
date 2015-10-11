@@ -15,6 +15,30 @@ macro_rules! print_stderr {
     }
 }
 
+enum HighlightStyles {
+    Red,
+    Cyan,
+    BlackUnderline,
+    WhiteUnderline,
+    RedUnderline,
+    CyanUnderline,
+    RedBackground,
+    CyanBackground
+}
+
+fn color_code(style: HighlightStyles) -> &'static str {
+    match style {
+        HighlightStyles::Red => "\x1b[1;31m",
+        HighlightStyles::Cyan => "\x1b[1;36m",
+        HighlightStyles::BlackUnderline => "\x1b[4;30m",
+        HighlightStyles::WhiteUnderline => "\x1b[4;37m",
+        HighlightStyles::RedUnderline => "\x1b[4;31m",
+        HighlightStyles::CyanUnderline => "\x1b[4;36m",
+        HighlightStyles::RedBackground => "\x1b[41m",
+        HighlightStyles::CyanBackground => "\x1b[46m",
+    }
+}
+
 fn main() {
     let args: Vec<String> = env::args().collect();
     if args.len() <  2 {
@@ -34,7 +58,8 @@ fn main() {
 
     let mut running_program_stderr = running_program.stderr.unwrap();
 
-    let color_header = "\x1b[91m";
+    let style = HighlightStyles::RedUnderline;
+    let color_header = color_code(style);
     let color_footer = "\x1b[0m";
 
     let mut buf = [0; 4096];
