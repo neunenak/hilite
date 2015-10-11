@@ -32,14 +32,18 @@ fn main() {
 
     let mut running_program_stderr = running_program.stderr.unwrap();
 
+    let color_header = "\x1b[91m";
+    let color_footer = "\x1b[0m";
+
     let mut buf = [0; 4096];
     loop {
         let res = running_program_stderr.read(&mut buf[..]);
         match res {
             Ok(0) => break,
             Ok(_) => {
-                let s = String::from_utf8_lossy(&mut buf);
-                print_stderr!("{}", s);
+                print_stderr!("{}{}{}", color_header,
+                                        String::from_utf8_lossy(&mut buf),
+                                        color_footer);
             },
             Err(_) => panic!("Error reading from child process")
         }
