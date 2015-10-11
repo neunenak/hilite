@@ -24,9 +24,12 @@ fn main() {
     let program_name = args.get(1).unwrap();
     let (_, program_args) = args.split_at(2);
 
-    let mut program_command: process::Command = process::Command::new(program_name);
-    program_command.stderr(process::Stdio::piped());
-    let mut running_program = program_command.spawn().unwrap_or_else({|_| panic!("Failed to spawn program") });
+    let running_program = process::Command::new(program_name)
+                              .args(& program_args)
+                              .stderr(process::Stdio::piped())
+                              .spawn()
+                              .unwrap_or_else({|_| panic!("Failed to spawn program") });
+
     let mut running_program_stderr = running_program.stderr.unwrap();
 
     let mut buf = [0; 4096];
@@ -34,7 +37,7 @@ fn main() {
         let res = running_program_stderr.read(&mut buf[..]);
         match res {
             Ok(0) => break,
-            Ok(bytes) => {
+            Ok(_) => {
                 let s = String::from_utf8_lossy(&mut buf);
                 print_stderr!("{}", s);
             },
