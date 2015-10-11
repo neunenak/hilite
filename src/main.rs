@@ -36,7 +36,7 @@ fn main() {
             Ok(0) => break,
             Ok(bytes) => {
                 let s = String::from_utf8_lossy(&mut buf);
-                print!("{}", s);
+                print_stderr!("{}", s);
             },
             Err(_) => panic!("Error reading from child process")
         }
