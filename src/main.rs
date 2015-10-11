@@ -10,7 +10,9 @@ use std::io::Read;
 use std::process;
 
 macro_rules! print_stderr {
-    ($($arg:tt)*) => { write!(&mut io::stderr(), "{}", format_args!($($arg)*)) }
+    ($($arg:tt)*) => {
+         (write!(&mut io::stderr(), "{}", format_args!($($arg)*))).unwrap();
+    }
 }
 
 fn main() {
