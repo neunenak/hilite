@@ -64,6 +64,19 @@ fn main() {
         return;
     }
 
+    let style = match matches.opt_str("style") {
+        Some(ref s) if s == "red" => HighlightStyles::Red,
+        Some(ref s) if s == "cyan" => HighlightStyles::Cyan,
+        Some(ref s) if s == "underline-black" => HighlightStyles::BlackUnderline,
+        Some(ref s) if s == "underline-white" => HighlightStyles::WhiteUnderline,
+        Some(ref s) if s == "underline-red" => HighlightStyles::RedUnderline,
+        Some(ref s) if s == "underline-cyan" => HighlightStyles::CyanUnderline,
+        Some(ref s) if s == "background-red" => HighlightStyles::RedBackground,
+        Some(ref s) if s == "background-cyan" => HighlightStyles::CyanBackground,
+        Some(ref s) => panic!("Bad option for style: {}", s),
+        None => HighlightStyles::Red
+    };
+
     let program_name = matches.free.get(0).unwrap();
     let (_, program_args) = matches.free.split_at(1);
 
@@ -75,7 +88,6 @@ fn main() {
 
     let mut running_program_stderr = running_program.stderr.unwrap();
 
-    let style = HighlightStyles::RedUnderline;
     let color_header = color_code(style);
     let color_footer = "\x1b[0m";
 
