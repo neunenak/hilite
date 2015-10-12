@@ -5,3 +5,10 @@ getopts = "0.2.14"
 name = "hilite"
 version = "1.0.0"
 authors = ["greg <greg.shuflin@gmail.com>"]
+
+description = "A simple command-line utility that highlights stderr output"
+homepage = " https://github.com/neunenak/hilite"
+readme = "README"
+
+keywords = ["highlight", "hilite"]
+license = "BSD-3-Clause"
