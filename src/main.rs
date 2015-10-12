@@ -44,8 +44,7 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     let mut opts = getopts::Options::new();
-    //opts.optopt("s", "style", "One of {red|cyan|underline-black|underline-white|underline-red|underline-cyan|background-red|background-cyan}", "STYLE");
-    opts.optopt("s", "style", "Some stuff", "STYLE");
+    opts.optopt("s", "style", "STYLE is one of: red | cyan | underline-{red|cyan|black|white} | background-{red|cyan}", "STYLE");
     opts.optflag("h", "help", "Print help");
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => m,
