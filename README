@@ -1,0 +1,11 @@
+hilite is a small command line program that applies a color to the stderr
+output of another program. This is useful in, for instance, large compilation
+processes where there is a lot of text chatter that would otherwise obscure
+legitimate error messages.
+
+Usage example:
+
+$ hilite ls
+$ hilite -- ls --color
+$ hilite --style cyan -- make --my --make --options
+
