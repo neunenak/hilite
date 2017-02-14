@@ -80,7 +80,7 @@ fn main() {
     let (_, program_args) = matches.free.split_at(1);
 
     let running_program = process::Command::new(program_name)
-                              .args(& program_args)
+                              .args(program_args)
                               .stderr(process::Stdio::piped())
                               .spawn()
                               .unwrap_or_else({|_| panic!("Failed to spawn program") });
