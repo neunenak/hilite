@@ -3,7 +3,7 @@ getopts = "0.2.14"
 
 [package]
 name = "hilite"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["greg <greg.shuflin@gmail.com>"]
 
 description = "A simple command-line utility that highlights stderr output"
