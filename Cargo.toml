@@ -8,7 +8,7 @@ authors = ["greg <greg.shuflin@gmail.com>"]
 edition = "2024"
 
 description = "A simple command-line utility that highlights stderr output"
-homepage = " https://github.com/neunenak/hilite"
+homepage = "https://github.com/neunenak/hilite"
 readme = "README"
 
 keywords = ["highlight", "hilite"]
