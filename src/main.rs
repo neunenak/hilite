@@ -6,8 +6,8 @@
 extern crate getopts;
 use std::env;
 use std::io;
-use std::io::Write;
 use std::io::Read;
+use std::io::Write;
 use std::process;
 
 macro_rules! print_stderr {
@@ -24,7 +24,7 @@ enum HighlightStyles {
     RedUnderline,
     CyanUnderline,
     RedBackground,
-    CyanBackground
+    CyanBackground,
 }
 
 fn color_code(style: HighlightStyles) -> &'static str {
@@ -44,11 +44,16 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     let mut opts = getopts::Options::new();
-    opts.optopt("s", "style", "STYLE is one of: red | cyan | underline-{red|cyan|black|white} | background-{red|cyan}", "STYLE");
+    opts.optopt(
+        "s",
+        "style",
+        "STYLE is one of: red | cyan | underline-{red|cyan|black|white} | background-{red|cyan}",
+        "STYLE",
+    );
     opts.optflag("h", "help", "Print help");
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => m,
-        Err(f) => panic!(f.to_string())
+        Err(f) => panic!("{f}"),
     };
 
     if matches.opt_present("h") {
@@ -57,9 +62,8 @@ fn main() {
         return;
     }
 
-    if matches.free.len() <  1 {
-        print_stderr!("{}: specify a command to execute\n",
-                      args.get(0).unwrap());
+    if matches.free.len() < 1 {
+        print_stderr!("{}: specify a command to execute\n", args.first().unwrap());
         return;
     }
 
@@ -73,17 +77,17 @@ fn main() {
         Some(ref s) if s == "background-red" => HighlightStyles::RedBackground,
         Some(ref s) if s == "background-cyan" => HighlightStyles::CyanBackground,
         Some(ref s) => panic!("Bad option for style: {}", s),
-        None => HighlightStyles::Red
+        None => HighlightStyles::Red,
     };
 
     let program_name = matches.free.get(0).unwrap();
     let (_, program_args) = matches.free.split_at(1);
 
     let running_program = process::Command::new(program_name)
-                              .args(program_args)
-                              .stderr(process::Stdio::piped())
-                              .spawn()
-                              .unwrap_or_else({|_| panic!("Failed to spawn program") });
+        .args(program_args)
+        .stderr(process::Stdio::piped())
+        .spawn()
+        .expect("Failed to spawn program");
 
     let mut running_program_stderr = running_program.stderr.unwrap();
 
@@ -96,11 +100,14 @@ fn main() {
         match res {
             Ok(0) => break,
             Ok(_) => {
-                print_stderr!("{}{}{}", color_header,
-                                        String::from_utf8_lossy(&mut buf),
-                                        color_footer);
-            },
-            Err(_) => panic!("Error reading from child process")
+                print_stderr!(
+                    "{}{}{}",
+                    color_header,
+                    String::from_utf8_lossy(&buf),
+                    color_footer
+                );
+            }
+            Err(_) => panic!("Error reading from child process"),
         }
     }
 }
